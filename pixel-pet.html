@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>pixel pet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#3d2e23;
+    --wall:#ead9c2;
+    --wall-line:#ddc8ac;
+    --floor:#b98c5c;
+    --floor-line:#a0754a;
+    --skirt:#7a5a3c;
+    --bubble:#fffaf0;
+    --label:#6b5646;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:transparent}
+  body{
+    display:flex; justify-content:center; padding:6px;
+    font-family:'DotGothic16','Hiragino Maru Gothic ProN','Yu Gothic',sans-serif;
+    -webkit-font-smoothing:none;
+  }
+  .panel{
+    width:288px; border:4px solid var(--ink); background:var(--wall);
+    overflow:hidden; user-select:none;
+  }
+  .room{ position:relative; height:200px; cursor:pointer; }
+
+  .wall{
+    position:absolute; inset:0 0 72px 0; background:var(--wall);
+    background-image:repeating-linear-gradient(
+      to bottom, var(--wall-line) 0 2px, transparent 2px 16px);
+  }
+  .skirt{ position:absolute; left:0; right:0; bottom:72px; height:4px; background:var(--skirt); }
+  .floor{
+    position:absolute; left:0; right:0; bottom:0; height:72px; background:var(--floor);
+    background-image:
+      repeating-linear-gradient(to bottom, var(--floor-line) 0 2px, transparent 2px 24px),
+      repeating-linear-gradient(to right, var(--floor-line) 0 2px, transparent 2px 48px);
+  }
+
+  .sprite{
+    position:absolute; image-rendering:pixelated; background-repeat:no-repeat;
+  }
+  .house{
+    left:16px; bottom:8px; width:96px; height:96px;
+    background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABAElEQVR4nGNgIAFURdn8r4qy+U+KHhZSDPfQlYdwohj+ty07wkiMPiaSDWdgYPDQlWcg1icELUA3nFRL8FqAy3BSLMFpASHDibUEqwXEGk6MJRgWkGo4IUtQLCDXcHyWwC2g1HBcljBR03BsljBS23BksOPyQ0hRsePyQ5pYwMDAwAAvT6qibP7n5cVRxdBJkxYxwMoqogq7stqpWMW7mrMJ6iVYFuEynJAcURYQYwAhNShB9OrxI4IGYgP49KFYICYrR5YF+PQRVeFQAmgeRCg+EJOVQ8EMDAwMU2aUomhA5sPY2PTBAN6MxiXKRZQPvr3+hsLHmdEmTVpElIGkAADfUW/lOL6/dgAAAABJRU5ErkJggg=="); background-size:96px 96px;
+  }
+  .pet{
+    left:148px; bottom:-8px; width:128px; height:128px;
+    background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAAAgCAYAAACVf3P1AAAC0klEQVR4nO2cvWvbQBiHfy6dUzpoatFSEB4NGjK1EAjBIU7ImKH0I1BoptJCNtPS4q20XQ2BxgX/BW67pAXPhQo8BkEX0c1T8w+oQ1CQrdN9WScpuveZbEnvPffar066EzZAEBXS4u30PTdOXgdhxD22yFgT/vR72faalH9d/Td5DbRdJ70plu3EKrGm/cuFWLZfFlv8N0SNfXj0QsZZeGzRft9zY99z4yCMWipfRlPyr6tfWIBNIynEqvtBXJI7EjCGUZxHc6lGWXEFXALI30A/cyNLzuLv/B8A4K5zS3isyodgoz+5PSjDn3bl9aUsf+YSLCtXpe06UhMAG/2+58bHh72r2wOT/rQrry9l+hdmwabk6U6AMyOy3X982MPXn7+M+nc313P3l5H/st+6SQhRL3LXAWWQufabhPzX3y8swPGP37jj3AYAbHTuSTWqE1NXprM/V69lc9GJ4XEezTMzSxMxVfiFBZgUkgo6MXmkp/6yH4JOTNW8//wNAHsJo+06SkXAi0k8spj2CwtQ5wwuctTTKaAii66M/HmPCZNcVHISxaisCZr2Mwvw7d5jAMCbyZdcycn4FBdnMwDA2lYHzx4+zT1Wpj3y2+nXmgWfjE+ltpkice0M+tgZ9K30J18+AFycza5t/gtDMW8dSFWQd0bwngiQ3z6/1AioU91FnpF1809GQ2x397Hd3cdkNCzdbyqmCj8tRBOVIizA3c313LOcx2Q05D72kaVqP8C+nBwddHF00FWK0aHq/E37V3oSYit7T55X3YXGkJmEbPhe5qB3nz5qNf765avMtmkQcm+CyW+Xf+ESHIRRaxqEWjIZeMmT305/5h6Q1QlWJYtYjhElT347/cxJyKqd0E2e/Pb5hb8L/t4fLGxb2+pw5ekVeuBytXyV36WSv9l+5Vnw/Qc97v7lDhcN+ZvlV/p3AB10zz7yk58gCIIgCIJoJv8B2f5kK7VVfhYAAAAASUVORK5CYII="); background-size:640px 128px;
+    animation:breathe 2.4s steps(1,end) infinite;
+  }
+  @keyframes breathe{ 0%,49%{transform:translateY(0)} 50%,100%{transform:translateY(-2px)} }
+  @media (prefers-reduced-motion:reduce){ .pet{animation:none} }
+
+  .bubble{
+    position:absolute; right:8px; top:6px; max-width:184px;
+    background:var(--bubble); border:3px solid var(--ink); color:var(--ink);
+    padding:7px 9px; font-size:13px; line-height:1.45;
+    opacity:0; transition:opacity .12s steps(2,end); pointer-events:none;
+  }
+  .bubble.on{ opacity:1 }
+  .bubble i,.bubble b{
+    position:absolute; display:block; background:var(--bubble);
+    border-left:3px solid var(--ink); border-right:3px solid var(--ink);
+  }
+  .bubble i{ left:24px; bottom:-9px; width:12px; height:6px; }
+  .bubble b{ left:27px; bottom:-15px; width:6px; height:6px;
+             border-bottom:3px solid var(--ink); }
+
+  .bar{
+    display:flex; align-items:center; justify-content:space-between;
+    border-top:4px solid var(--ink); background:var(--bubble);
+    padding:6px 10px; font-size:12px; color:var(--label);
+  }
+  .bar span:last-child{ color:var(--ink) }
+</style>
+</head>
+<body>
+<div class="panel">
+  <div class="room" id="room">
+    <div class="wall"></div>
+    <div class="skirt"></div>
+    <div class="floor"></div>
+    <div class="sprite house"></div>
+    <div class="sprite pet" id="pet"></div>
+    <div class="bubble" id="bubble"><span id="msg"></span><i></i><b></b></div>
+  </div>
+  <div class="bar">
+    <span id="clock">--:--</span>
+    <span id="state">　</span>
+  </div>
+</div>
+
+<script>
+const POSE = { idle:0, sleep:1, eat:2, stretch:3, wave:4 };
+const CELL = 128;
+
+const BANDS = [
+  { from:5,  to:8,  pose:'stretch', state:'おはよう', msgs:[
+      'おはよう','まだ寝ててもいいよ','水を一杯だけ飲もうか','今日はゆっくりでいこう',
+      '起きられただけで十分'] },
+  { from:8,  to:12, pose:'idle', state:'活動中', msgs:[
+      'お疲れさま','少し休もうか？','軽くストレッチ','ひとつ終わったら上出来',
+      '肩、上がってない？'] },
+  { from:12, to:14, pose:'eat', state:'ごはん', msgs:[
+      'ごはん食べた？','一緒にひとやすみ','よく噛んでね','午後は流していこう'] },
+  { from:14, to:18, pose:'idle', state:'のんびり', msgs:[
+      '目を閉じて10秒','がんばりすぎてない？','席を立ってみよう','お疲れさま',
+      '今日はここまででもいいよ'] },
+  { from:18, to:22, pose:'wave', state:'ごきげん', msgs:[
+      '今日もよくやったね','もう店じまいでいいよ','好きなことしていい時間',
+      'ごはんとお風呂、どっちから？'] },
+  { from:22, to:26, pose:'idle', state:'夜ふかし中', msgs:[
+      'そろそろ休もうか','続きは明日の自分に渡そう','画面、まぶしくない？',
+      '寝るだけでも今日の成果'] },
+  { from:26, to:29, pose:'sleep', state:'すやすや', msgs:[
+      '…zzz','横になるだけでもいいよ','起きてても怒らないよ','そっとしておくね'] },
+];
+
+function band(h){
+  const x = h < 5 ? h + 24 : h;
+  return BANDS.find(b => x >= b.from && x < b.to) || BANDS[1];
+}
+function setPose(name){
+  document.getElementById('pet').style.backgroundPosition = `-${POSE[name]*CELL}px 0`;
+}
+
+let timer = null, current = BANDS[1];
+
+function tick(){
+  const now = new Date();
+  current = band(now.getHours());
+  if (!timer) setPose(current.pose);
+  document.getElementById('clock').textContent =
+    String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+  document.getElementById('state').textContent = current.state;
+}
+
+function say(){
+  const list = current.msgs;
+  document.getElementById('msg').textContent = list[Math.floor(Math.random()*list.length)];
+  document.getElementById('bubble').classList.add('on');
+  if (current.pose !== 'sleep') setPose('wave');
+  clearTimeout(timer);
+  timer = setTimeout(() => {
+    document.getElementById('bubble').classList.remove('on');
+    setPose(current.pose);
+    timer = null;
+  }, 5000);
+}
+
+document.getElementById('room').addEventListener('click', say);
+tick();
+setInterval(tick, 30000);
+</script>
+</body>
+</html>
